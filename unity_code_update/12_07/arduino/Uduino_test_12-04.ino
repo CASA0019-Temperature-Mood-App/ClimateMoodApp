@@ -1,16 +1,17 @@
 // Uduino settings
 #include <Uduino_Wifi.h>
 Uduino_Wifi uduino("uduinoBoard"); // Declare and name your object
-#include <U8g2lib.h> // 引入U8g2库
+#include <U8g2lib.h> // Add U8g2 library
 #include <Servo.h>
 #include <DHT.h>
 
-#define DHTPIN 2  // DHT22数据引脚为GPIO2
+#define DHTPIN 2  // The DHT22 data pin is GPIO2
 #define DHTTYPE DHT22
 
 DHT dht(DHTPIN, DHTTYPE);
 U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 Servo myservo;
+float temperature;
 float valueOne;
 int valueTwo;
 
@@ -52,8 +53,15 @@ void loop()
     u8g2.drawStr(50, 20, "Local");
     u8g2.drawStr(50, 40, tempStr.c_str());
     u8g2.sendBuffer();
-    int val = map(temperature, 45, -15, 0, 225);
-    myservo.write(val);
+     if (temperature >= -15 && temperature < 0) {
+     myservo.write(199);
+  } else if (temperature >= 0 && temperature < 15) {
+     myservo.write(135);
+  } else if (temperature >= 15 && temperature < 30) {
+     myservo.write(75);
+  } else if (temperature >= 30 && temperature <= 45) {
+     myservo.write(30);
+  } 
     uduino.println(0);
     uduino.delay(5000);
   }
@@ -69,28 +77,35 @@ void getdata(){
   String tempStr = String(valueOne) + " C";
     switch(valueTwo){
     case 0:
-    u8g2.drawStr(50, 20, "Local");
-    break;
-    case 1:
     u8g2.drawStr(50, 20, "London");
     break;
+    case 1:
+    u8g2.drawStr(50, 20, "Toronto");
+    break;
     case 2:
-    u8g2.drawStr(50, 20, "Beijing");
+    u8g2.drawStr(50, 20, "Dubai");
     break;
     case 3:
-    u8g2.drawStr(50, 20, "Washington");
+    u8g2.drawStr(50, 20, "Shanghai");
     break;
     case 4:
-    u8g2.drawStr(50, 20, "Moscow");
+    u8g2.drawStr(50, 20, "Sydney");
     break;
     case 5:
-    u8g2.drawStr(50, 20, "Tokyo");
+    u8g2.drawStr(50, 20, "Local");
     break;
     default:
     break;
   }
-  u8g2.drawStr(50, 40, tempStr.c_str());  // 写入字符串
+  u8g2.drawStr(50, 40, tempStr.c_str());  // Write string
   u8g2.sendBuffer();
-  int val = map(valueOne, 45, -15, 0, 225);
-  myservo.write(val);
+  if (valueOne >= -15 && valueOne < 0) {
+     myservo.write(199); 
+  } else if (valueOne >= 0 && valueOne < 15) {
+     myservo.write(135); 
+  } else if (valueOne >= 15 && valueOne < 30) {
+     myservo.write(75); 
+  } else if (valueOne >= 30 && valueOne <= 45) {
+     myservo.write(30); 
+  } 
 }
