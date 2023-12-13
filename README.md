@@ -1,7 +1,5 @@
 # Climate Mood  
-Climate change significantly impacts mood and energy levels. 
-We propose visualizing local sentiments through a physical device and 
-its digital twin using emoji face filters and a 7-day temperature forecast.   
+Climate mood tracker designed to capture the emotional impact of climate globally through a physical device and its digital version, using emoji filters to represent mood and energy shifts.​
 
 We will offer options for five cities and the device's local settings,
 which can be selected via a mobile app to experience the climate mood
