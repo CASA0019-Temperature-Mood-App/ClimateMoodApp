@@ -65,11 +65,11 @@ void loop()
      myservo.write(30);
   } 
   //else {
-    // 对于超出范围的温度，可以设置一个默认的角度或者不进行任何操作
-   // val = 0; // 或者任何默认值
+    //For temperatures that are out of range, you can set a default Angle or do nothing
+   // val = 0; // Or any default value
   //}
 
- // myservo.write(val); // 设置电机的角度
+ // myservo.write(val); // Set the Angle of the motor
     uduino.println(0);
     uduino.delay(5000);
   }
@@ -105,7 +105,7 @@ void getdata(){
     default:
     break;
   }
-  u8g2.drawStr(50, 40, tempStr.c_str());  // 写入字符串
+  u8g2.drawStr(50, 40, tempStr.c_str());  // Write string
   u8g2.sendBuffer();
   //int val1;
   if (valueOne >= -15 && valueOne < 0) {
@@ -118,9 +118,9 @@ void getdata(){
      myservo.write(30); 
   } 
   //else {
-    // 对于超出范围的温度，可以设置一个默认的角度或者不进行任何操作
-  //  val = 0; // 或者任何默认值
+    // For temperatures that are out of range, you can set a default Angle or do nothing
+  //  val = 0; // Or any default value
  // }
 
-  //myservo.write(val1); // 设置电机的角度
+  //myservo.write(val1); // Set the Angle of the motor
 }
