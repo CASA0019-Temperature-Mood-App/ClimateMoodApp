@@ -62,6 +62,8 @@ public class prefabcode : MonoBehaviour
     void Update(){
       
     }
+
+    //get data from GetAPI
     private void Readvalue(){
         temp = GetAPI.temp;
         cityname = GetAPI.cityname;
@@ -72,13 +74,18 @@ public class prefabcode : MonoBehaviour
         camerafront = changecamera.camerafront;
         citynum = GetAPI.citynum;
     }
+
+    //control AR prefab
     public void PushData(){
         Readvalue();
-        //Citytext.text = cityname;
+        //Push temperature data to UI text object
         Temptext.text = temp.ToString()+"°C";
         Debug.Log(temp.ToString());
+        //weather effect
         weathertype(weather_code);
+        //emoji
         changeface();
+        //move gauge pointer
         pointer.transform.localRotation = Quaternion.Euler(0,0,0);
         if(temp<=0){
           tempangle = (float)67.5;
@@ -93,6 +100,8 @@ public class prefabcode : MonoBehaviour
           tempangle =(-tempangle);
         }
         pointer.transform.Rotate(new Vector3(0f,tempangle,0f),Space.Self);
+
+        //send data to arduino
         UduinoManager.Instance.sendCommand("tempdata", temp,citynum);
         Chart();
         GameObject.FindWithTag("ARface").SendMessage("reset");

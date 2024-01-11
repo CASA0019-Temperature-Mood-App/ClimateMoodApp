@@ -23,8 +23,7 @@ public class changecamera : MonoBehaviour
     public static Boolean camerafront = true;
 
     void Start(){
-        //ARface=GetComponent<ARFaceManager>();
-        //ARimage=GetComponent<ARTrackedImageManager>();
+        //Find zoom button object
         zoomobject = findinactiveobjectName("zoombutton");
     }
     
@@ -32,14 +31,18 @@ public class changecamera : MonoBehaviour
 
     public void cameraswitch(){
         Debug.Assert(m_CameraManager != null, "camera manager cannot be null");
+        //switch cameraFacingDirection option, User=front camera,World=back camera
         CameraFacingDirection newfacingdirection;
         switch(m_CameraManager.requestedFacingDirection){
             case CameraFacingDirection.User:
             camerafront=false;
             zoomobject.gameObject.SetActive(false);
             newfacingdirection = CameraFacingDirection.World;
+            //destroy AR object when change to back camera
             ARobject= GameObject.FindWithTag("ARface");
             Destroy(ARobject);
+
+            //disactive AR face manager
             ARface.enabled=false;
             backbutton.gameObject.SetActive(true);
             frontbutton.gameObject.SetActive(false);
@@ -56,19 +59,12 @@ public class changecamera : MonoBehaviour
             Reset.gameObject.SetActive(false);
             break;
         }
-        // if(camerafront){
-        //     backbutton.gameObject.SetActive(true);
-        //     frontbutton.gameObject.SetActive(false);
-        //     Reset.gameObject.SetActive(true);
-        // }else{
-        //     backbutton.gameObject.SetActive(false);
-        //     frontbutton.gameObject.SetActive(true);
-        //     Reset.gameObject.SetActive(false);
-        // }
+
         cameraManager.requestedFacingDirection=newfacingdirection;
 
     }
 
+    //Find object that not actived
     GameObject findinactiveobjectName(string name)
     {
     Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];

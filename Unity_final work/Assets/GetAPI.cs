@@ -80,19 +80,19 @@ public class GetAPI : MonoBehaviour
     UduinoManager.Instance.OnDataReceived += DataReceived;
   }
     void Start(){
-        //UduinoManager.Instance.OnDataReceived += DataReceived;
+        //Find dropdown button object
         dropdown = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
+        //Listen button event
         dropdown.onValueChanged.AddListener(delegate{
         DropdownValueChanged(dropdown);
         });
-        // zoomobject = findinactiveobjectName("zoombutton");
+        
         
     }
     void Update(){
-      //UduinoManager.Instance.OnDataReceived += DataReceived;
-      //testwifi();
     }
 
+    //set url
     void DropdownValueChanged(TMP_Dropdown change){
       Debug.Log(change.value);
       switch(change.value){
@@ -137,12 +137,14 @@ public class GetAPI : MonoBehaviour
       }
     }
 
-  private IEnumerator GetDatas(string Url,string cityname,float local){
+  //send request to api
+  private IEnumerator GetData(string Url,string cityname,float local){
     using(UnityWebRequest webRequest = UnityWebRequest.Get(Url)){
       yield return webRequest.SendWebRequest();
       if(webRequest.result == UnityWebRequest.Result.ConnectionError){
         Debug.LogError(webRequest.error);
       }else{
+
         var text =webRequest.downloadHandler.text;
         Root root = JsonConvert.DeserializeObject<Root>(text);
         temp = root.current.temperature_2m;
@@ -150,7 +152,7 @@ public class GetAPI : MonoBehaviour
         dailymintemp = root.daily.temperature_2m_min;
         time = root.daily.time;
         weather_code = root.current.weather_code;
-        //UduinoManager.Instance.sendCommand("tempdata", temp,citynum);
+        
         camerafront = changecamera.camerafront;
         if(camerafront){
           GameObject.FindWithTag("ARface").SendMessage("PushData");
@@ -162,7 +164,7 @@ public class GetAPI : MonoBehaviour
   }
 
   public void getdata(){
-    StartCoroutine(GetDatas(URL,cityname,localtemp));
+    StartCoroutine(GetData(URL,cityname,localtemp));
   }
 
 
@@ -172,7 +174,6 @@ public class GetAPI : MonoBehaviour
 
   void pushLocal(){
         temp = localtemp;
-        
         camerafront = changecamera.camerafront;
         if(camerafront){
           GameObject.FindWithTag("ARface").SendMessage("pushlocal");
@@ -181,6 +182,7 @@ public class GetAPI : MonoBehaviour
         }
   }
 
+  //receive data from arduino
   void DataReceived(string data,UduinoDevice uduinoBoard){
     Debug.Log(data);
     localtemp=float.Parse(data);
@@ -191,20 +193,6 @@ public class GetAPI : MonoBehaviour
   
   }
 
-  // GameObject findinactiveobjectName(string name)
-  // {
-  //   Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
-  //   for (int i = 0; i < objs.Length; i++)
-  //   {
-  //       if (objs[i].hideFlags == HideFlags.None)
-  //       {
-  //           if (objs[i].name == name)
-  //           {
-  //               return objs[i].gameObject;
-  //           }
-  //       }
-  //   }
-  //   return null;
-  // }
+
 
 }
