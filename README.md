@@ -20,3 +20,6 @@ Step 4 |  Click the 'Digital Twins' to scan the area of the leaflet and observe 
 Step 5 |  Hit 'View Gauge' to check the sync between the physical and digital devices.  
 
 
+![Device](Device_design/demo.png)
+
+
